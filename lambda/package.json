@@ -6,7 +6,7 @@
   "scripts": {
     "dev": "serverless offline start --stage dev",
     "build": "tsc",
-    "deploy:prod": "cp .env.production .env && serverless deploy"
+    "deploy:prod": "serverless deploy"
   },
   "author": "",
   "license": "ISC",
