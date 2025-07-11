@@ -18,6 +18,29 @@ function App() {
     }));
   };
 
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    try {
+      const res = await fetch(`${import.meta.env.VITE_BASE_PATH}/contact`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(form),
+      });
+
+      if (res.ok) {
+        alert("Email sent successfully!");
+        setForm({ name: "", email: "", subject: "", message: "" });
+      } else {
+        alert("Failed to send email. Please try again later.");
+      }
+    } catch (error) {
+      console.error("Error sending email:", error);
+      alert("An error occurred. Please try again later.");
+    }
+  };
+
   return (
     <div className="contact1">
       <div className="container-contact1">
@@ -25,13 +48,10 @@ function App() {
           <img src="images/img-01.png" alt="IMG" />
         </div>
 
-        <form className="contact1-form validate-form">
+        <form className="contact1-form validate-form" onSubmit={handleSubmit}>
           <span className="contact1-form-title">Get in touch</span>
 
-          <div
-            className="wrap-input1 validate-input"
-            data-validate="Name is required"
-          >
+          <div className="wrap-input1 validate-input">
             <input
               className="input1"
               type="text"
@@ -43,10 +63,7 @@ function App() {
             <span className="shadow-input1"></span>
           </div>
 
-          <div
-            className="wrap-input1 validate-input"
-            data-validate="Valid email is required: ex@abc.xyz"
-          >
+          <div className="wrap-input1 validate-input">
             <input
               className="input1"
               type="text"
@@ -58,10 +75,7 @@ function App() {
             <span className="shadow-input1"></span>
           </div>
 
-          <div
-            className="wrap-input1 validate-input"
-            data-validate="Subject is required"
-          >
+          <div className="wrap-input1 validate-input">
             <input
               className="input1"
               type="text"
