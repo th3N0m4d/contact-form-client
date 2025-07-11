@@ -1,0 +1,21 @@
+service: contact-form-api
+
+provider:
+  name: aws
+  runtime: nodejs18.x
+  region: eu-central-1
+
+functions:
+  sendEmail:
+    handler: handler.sendEmail
+    events:
+      - httpApi:
+          path: /contact
+          method: POST
+
+plugins:
+  - serverless-offline
+
+custom:
+  serverless-offline:
+    httpPort: 3003

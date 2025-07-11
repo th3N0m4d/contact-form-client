@@ -1,0 +1,25 @@
+{
+  "name": "lambda",
+  "version": "1.0.0",
+  "description": "",
+  "main": "handler.js",
+  "scripts": {
+    "dev": "serverless offline start --stage dev",
+    "build": "tsc",
+    "deploy:prod": "cp .env.production .env && serverless deploy"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "aws-sdk": "2.1692.0",
+    "serverless": "4.17.1",
+    "serverless-offline": "14.4.0"
+  },
+  "devDependencies": {
+    "@serverless/typescript": "4.17.1",
+    "@types/aws-lambda": "8.10.150",
+    "@types/node": "24.0.13",
+    "ts-node": "10.9.2",
+    "typescript": "5.8.3"
+  }
+}
