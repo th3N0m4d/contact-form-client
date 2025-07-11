@@ -1,15 +1,23 @@
 import { SES } from "aws-sdk";
 import { APIGatewayProxyEvent } from "aws-lambda";
-
 const ses = new SES({ region: "eu-central-1" });
 
 export const sendEmail = async (event: APIGatewayProxyEvent) => {
-  console.log("Received event:", event);
-
   const headers = {
-    "Access-Control-Allow-Origin": "*",
-    "Access-Control-Allow-Credentials": true,
+    "Access-Control-Allow-Origin":
+      "https://contact-form-client-kappa.vercel.app",
+    "Access-Control-Allow-Headers": "Content-Type",
+    "Access-Control-Allow-Methods": "OPTIONS,POST",
   };
+
+  // Preflight request
+  if (event.httpMethod === "OPTIONS") {
+    return {
+      statusCode: 200,
+      headers,
+      body: JSON.stringify({ message: "CORS preflight success" }),
+    };
+  }
 
   try {
     const { name, email, subject, message } = JSON.parse(event.body || "{}");
