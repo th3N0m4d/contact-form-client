@@ -4,6 +4,15 @@ provider:
   name: aws
   runtime: nodejs18.x
   region: eu-central-1
+  httpApi:
+    cors:
+      allowedOrigins:
+        - https://contact-form-client-kappa.vercel.app/
+      allowedMethods:
+        - POST
+        - OPTIONS
+      allowedHeaders:
+        - Content-Type
 
 functions:
   sendEmail:
@@ -12,6 +21,9 @@ functions:
       - httpApi:
           path: /contact
           method: POST
+      - httpApi:
+          path: /contact
+          method: OPTIONS
 
 plugins:
   - serverless-offline
