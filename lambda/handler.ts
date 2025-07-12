@@ -1,17 +1,25 @@
 import { SES } from "aws-sdk";
-import { APIGatewayProxyEvent } from "aws-lambda";
+import { APIGatewayProxyEventV2, APIGatewayProxyEvent } from "aws-lambda";
+
 const ses = new SES({ region: "eu-central-1" });
 
-export const sendEmail = async (event: APIGatewayProxyEvent) => {
+export const sendEmail = async (
+  event: APIGatewayProxyEventV2 | APIGatewayProxyEvent
+) => {
   const headers = {
     "Access-Control-Allow-Origin":
       "https://contact-form-client-kappa.vercel.app",
-    "Access-Control-Allow-Headers": "Content-Type",
+    "Access-Control-Allow-Headers": "Content-Type, Authorization",
     "Access-Control-Allow-Methods": "OPTIONS,POST",
+    "Content-Type": "application/json",
   };
 
-  // Preflight request
-  if (event.httpMethod === "OPTIONS") {
+  // Handle preflight request for both HTTP API and REST API
+  const method =
+    (event as APIGatewayProxyEventV2).requestContext?.http?.method ||
+    (event as APIGatewayProxyEvent).httpMethod;
+
+  if (method === "OPTIONS") {
     return {
       statusCode: 200,
       headers,
@@ -23,14 +31,14 @@ export const sendEmail = async (event: APIGatewayProxyEvent) => {
     const { name, email, subject, message } = JSON.parse(event.body || "{}");
 
     const params = {
-      Destination: { ToAddresses: ["edielton.dantas@hotmail.com"] },
+      Destination: { ToAddresses: [process.env.TO_EMAIL || ""] },
       Message: {
         Body: {
           Text: { Data: `Message from ${name} (${email}):\n\n${message}` },
         },
         Subject: { Data: subject || "New Contact Form Message" },
       },
-      Source: "edielton.dantas@hotmail.com",
+      Source: process.env.FROM_EMAIL || "",
     };
 
     await ses.sendEmail(params).promise();

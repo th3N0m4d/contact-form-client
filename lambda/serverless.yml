@@ -7,12 +7,23 @@ provider:
   httpApi:
     cors:
       allowedOrigins:
-        - https://contact-form-client-kappa.vercel.app/
+        - https://contact-form-client-kappa.vercel.app
       allowedMethods:
         - POST
         - OPTIONS
       allowedHeaders:
         - Content-Type
+        - Authorization
+      allowCredentials: false
+  iamRoleStatements:
+    - Effect: Allow
+      Action:
+        - ses:SendEmail
+        - ses:SendRawEmail
+      Resource: "*"
+  environment:
+    TO_EMAIL: edielton.dantas@hotmail.com
+    FROM_EMAIL: edielton.dantas@hotmail.com
 
 functions:
   sendEmail:
@@ -21,9 +32,6 @@ functions:
       - httpApi:
           path: /contact
           method: POST
-      - httpApi:
-          path: /contact
-          method: OPTIONS
 
 plugins:
   - serverless-offline
