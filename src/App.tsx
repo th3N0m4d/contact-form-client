@@ -8,6 +8,7 @@ function App() {
     subject: "",
     message: "",
   });
+  const [loading, setLoading] = useState(false);
 
   const handleChange = (
     e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
@@ -21,6 +22,7 @@ function App() {
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
+    setLoading(true);
 
     try {
       const res = await fetch(`${import.meta.env.VITE_BASE_PATH}/contact`, {
@@ -40,6 +42,8 @@ function App() {
     } catch (error) {
       console.error("Error sending email:", error);
       toast.error("An error occurred. Please try again later.");
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -63,6 +67,7 @@ function App() {
               onChange={handleChange}
               required
               minLength={2}
+              disabled={loading}
             />
             <span className="shadow-input1"></span>
           </div>
@@ -77,6 +82,7 @@ function App() {
               value={form.email}
               onChange={handleChange}
               required
+              disabled={loading}
             />
             <span className="shadow-input1"></span>
           </div>
@@ -91,6 +97,7 @@ function App() {
               onChange={handleChange}
               required
               minLength={2}
+              disabled={loading}
             />
             <span className="shadow-input1"></span>
           </div>
@@ -104,15 +111,25 @@ function App() {
               value={form.message}
               required
               minLength={10}
+              disabled={loading}
             ></textarea>
             <span className="shadow-input1"></span>
           </div>
 
           <div className="container-contact1-form-btn">
-            <button className="contact1-form-btn">
+            <button className="contact1-form-btn" disabled={loading}>
               <span>
-                Send Email
-                <i className="fa fa-long-arrow-right" aria-hidden="true"></i>
+                {loading ? (
+                  <i className="fa fa-spinner fa-spin" aria-hidden="true"></i>
+                ) : (
+                  <>
+                    Send Email
+                    <i
+                      className="fa fa-long-arrow-right"
+                      aria-hidden="true"
+                    ></i>
+                  </>
+                )}
               </span>
             </button>
           </div>
