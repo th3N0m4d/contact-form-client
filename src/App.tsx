@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { toast } from "react-toastify";
 
 function App() {
   const [form, setForm] = useState({
@@ -20,6 +21,7 @@ function App() {
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
+
     try {
       const res = await fetch(`${import.meta.env.VITE_BASE_PATH}/contact`, {
         method: "POST",
@@ -30,14 +32,14 @@ function App() {
       });
 
       if (res.ok) {
-        alert("Email sent successfully!");
+        toast.success("Email sent successfully!");
         setForm({ name: "", email: "", subject: "", message: "" });
       } else {
-        alert("Failed to send email. Please try again later.");
+        toast.error("Failed to send email. Please try again later.");
       }
     } catch (error) {
       console.error("Error sending email:", error);
-      alert("An error occurred. Please try again later.");
+      toast.error("An error occurred. Please try again later.");
     }
   };
 
@@ -48,10 +50,10 @@ function App() {
           <img src="images/img-01.png" alt="IMG" />
         </div>
 
-        <form className="contact1-form validate-form" onSubmit={handleSubmit}>
+        <form className="contact1-form" onSubmit={handleSubmit}>
           <span className="contact1-form-title">Get in touch</span>
 
-          <div className="wrap-input1 validate-input">
+          <div className="wrap-input1 ">
             <input
               className="input1"
               type="text"
@@ -59,23 +61,27 @@ function App() {
               placeholder="Name"
               value={form.name}
               onChange={handleChange}
+              required
+              minLength={2}
             />
             <span className="shadow-input1"></span>
           </div>
 
-          <div className="wrap-input1 validate-input">
+          <div className="wrap-input1 ">
             <input
               className="input1"
-              type="text"
+              type="email"
+              pattern="^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$"
               name="email"
               placeholder="Email"
               value={form.email}
               onChange={handleChange}
+              required
             />
             <span className="shadow-input1"></span>
           </div>
 
-          <div className="wrap-input1 validate-input">
+          <div className="wrap-input1 ">
             <input
               className="input1"
               type="text"
@@ -83,20 +89,21 @@ function App() {
               placeholder="Subject"
               value={form.subject}
               onChange={handleChange}
+              required
+              minLength={2}
             />
             <span className="shadow-input1"></span>
           </div>
 
-          <div
-            className="wrap-input1 validate-input"
-            data-validate="Message is required"
-          >
+          <div className="wrap-input1">
             <textarea
               className="input1"
               name="message"
               placeholder="Message"
               onChange={handleChange}
               value={form.message}
+              required
+              minLength={10}
             ></textarea>
             <span className="shadow-input1"></span>
           </div>
