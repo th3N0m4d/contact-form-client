@@ -8,6 +8,7 @@ provider:
     cors:
       allowedOrigins:
         - https://contact-form-client-kappa.vercel.app
+        - http://localhost:5173
       allowedMethods:
         - POST
         - OPTIONS
