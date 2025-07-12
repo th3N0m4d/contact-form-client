@@ -1,69 +1,139 @@
-# React + TypeScript + Vite
+# Contact Form API + Frontend 📨 ⚡️
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+[![Deploy to Vercel](https://vercel.com/button)](https://vercel.com/new/import?s=https://github.com/th3N0m4d/contact-form-client)
+[![AWS Lambda](https://img.shields.io/badge/AWS-Lambda-orange?logo=aws-lambda&logoColor=white)](https://aws.amazon.com/lambda/)
+[![Serverless](https://img.shields.io/badge/Serverless-Framework-FD5750?logo=serverless&logoColor=white)](https://www.serverless.com/)
+[![Vite](https://img.shields.io/badge/Vite-4.x-blueviolet?logo=vite&logoColor=white)](https://vitejs.dev/)
+[![TypeScript](https://img.shields.io/badge/TypeScript-5.x-3178C6?logo=typescript&logoColor=white)](https://www.typescriptlang.org/)
+[![Status](https://img.shields.io/badge/status-production--ready-brightgreen)]()
 
-Currently, two official plugins are available:
+A full-stack, production-ready contact form powered by:
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+- ⚡️ **AWS Lambda** & **SES** for serverless email delivery
+- ⚙️ **Serverless Framework** for infrastructure as code
+- 🎯 **React + Vite + TypeScript** frontend deployed on **Vercel**
+- 🔐 CORS-safe, env-configurable, and cloud-native by design
 
-## Expanding the ESLint configuration
+---
 
-If you are developing a production application, we recommend updating the configuration to enable type-aware lint rules:
+## ✨ Live Demo
 
-```js
-export default tseslint.config([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
+📍 [Frontend on Vercel](https://contact-form-client-kappa.vercel.app/)  
+📬 [Deployed API Endpoint](https://x335lse7rl.execute-api.eu-central-1.amazonaws.com/contact)
 
-      // Remove tseslint.configs.recommended and replace with this
-      ...tseslint.configs.recommendedTypeChecked,
-      // Alternatively, use this for stricter rules
-      ...tseslint.configs.strictTypeChecked,
-      // Optionally, add this for stylistic rules
-      ...tseslint.configs.stylisticTypeChecked,
+---
 
-      // Other configs...
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
+## 🛠️ Tech Stack
+
+| Layer         | Tech                                                                                                                                                |
+| ------------- | --------------------------------------------------------------------------------------------------------------------------------------------------- |
+| Frontend      | [React](https://reactjs.org/), [Vite](https://vitejs.dev/), [TypeScript](https://www.typescriptlang.org/)                                           |
+| Backend       | [AWS Lambda](https://aws.amazon.com/lambda/), [SES](https://aws.amazon.com/ses/), [Node.js](https://nodejs.org/)                                    |
+| Dev Tools     | [Serverless Framework](https://www.serverless.com/), [Vercel](https://vercel.com/), [ESLint](https://eslint.org/), [Prettier](https://prettier.io/) |
+| Infra as Code | `serverless.yml` based deployment with CORS & IAM policies                                                                                          |
+| CI/CD         | Vercel auto-deploy from `main` branch                                                                                                               |
+
+---
+
+## 🔐 Environment Variables
+
+| Variable       | Where             | Purpose                            |
+| -------------- | ----------------- | ---------------------------------- |
+| `VITE_API_URL` | Frontend (Vercel) | Points to deployed Lambda endpoint |
+
+Example `.env` for local dev:
+
+```env
+VITE_API_URL=http://localhost:3003/contact
 ```
 
-You can also install [eslint-plugin-react-x](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-x) and [eslint-plugin-react-dom](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-dom) for React-specific lint rules:
+---
 
-```js
-// eslint.config.js
-import reactX from 'eslint-plugin-react-x'
-import reactDom from 'eslint-plugin-react-dom'
+## 📁 Project Structure
 
-export default tseslint.config([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
-      // Enable lint rules for React
-      reactX.configs['recommended-typescript'],
-      // Enable lint rules for React DOM
-      reactDom.configs.recommended,
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
 ```
+└── 📁contact-form-client
+    └── 📁lambda                # Server
+        ├── handler.ts
+        ├── package-lock.json
+        ├── package.json
+        ├── serverless.yml
+        ├── tsconfig.json
+    └── 📁public
+    └── 📁src                   # Client
+        ├── App.tsx
+        ├── main.tsx
+        ├── vite-env.d.ts
+    ├── .env
+```
+
+---
+
+## 🧪 Testing Locally
+
+### 🧩 Backend
+
+```bash
+npm run dev
+```
+
+Hit the endpoint:
+
+```bash
+curl -X POST http://localhost:3003/contact \
+  -H "Content-Type: application/json" \
+  -d '{"name":"Eddie","email":"test@example.com","subject":"Ping","message":"Yo"}'
+```
+
+### 🎨 Frontend
+
+```bash
+cd contact-form-client
+npm run dev
+```
+
+Open [http://localhost:5173](http://localhost:5173)
+
+---
+
+## ⚙️ Deploy to Production
+
+### 🔼 Deploy Lambda:
+
+```bash
+npm run deploy:prod
+```
+
+### 🚀 Deploy Frontend:
+
+Push to `main` → Vercel auto-builds and deploys
+Or use the Vercel UI
+
+---
+
+## 🧠 Use Cases
+
+- 🔧 Template for event-driven AWS applications
+- 🧪 Sandbox for learning Serverless + SES
+- 🌍 Contact gateway for portfolios, SaaS apps, or product sites
+
+---
+
+## 📬 TODOs / Improvements
+
+- [ ] Add reCAPTCHA or hCaptcha for spam filtering
+- [ ] Switch SES to production mode
+- [ ] Add rate limiting via API Gateway or Lambda middleware
+- [ ] Deploy to multiple regions
+
+---
+
+## 🧑‍💻 Author
+
+Made with ❤️ and AWS by [Eddie](https://edielton-dantas.me/)
+
+---
+
+## 🛑 License
+
+MIT — use, remix, and deploy freely.
